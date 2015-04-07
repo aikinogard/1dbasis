@@ -58,7 +58,7 @@ class findbasis:
 
 	def compute_coeff(self,bf,idx):
 		S = c1dints.overlap1d_matrix(bf)
-		d = self.compute_density(bf,idx)
+		d = self.compute_d(bf,idx)
 		Q = cho_factor(S)
 		return cho_solve(Q,d)
 
@@ -89,15 +89,24 @@ class findbasis:
 
 			for a in alist:
 				for b in blist:
-					#TODO evaluate the error
-					# err
+					self.basis_info[atom][atom_basis_idx][2] = a
+					self.basis_info[atom][atom_basis_idx][3] = b
+					err = 0.
+					for idx in S:
+						bf = self.make_bf(idx)
+						coeff = self.compute_coeff(bf,idx)
+						dens = self.show_density(coeff,bf)
+						err += np.sum((dens-self.n_ongrid[idx])**2)*self.dx
+					err = err/len(S)
+
 					if first or err < err_min[i]:
 						err_min[i] = err
 						a_opt[i] = a
 						b_opt[i] = b
 						first = False
-		a = np.median(a_opt)
-		b = np.median(b_opt)
+						
+		self.basis_info[atom][atom_basis_idx][2] = np.median(a_opt)
+		self.basis_info[atom][atom_basis_idx][3] = np.median(b_opt)
 
 
 
