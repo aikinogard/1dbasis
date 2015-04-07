@@ -17,14 +17,23 @@ FB = obj.findbasis(n_ongrid,dx,coord,coord_atom,basis_info)
 print 'optimize s orbital of h atom'
 FB.optimize('h',0,np.logspace(0,2,10),np.linspace(0.3,1,4),5)
 print FB.basis_info
+FB.show_density(40)
+FB.show_error()
 print '\n'
 
 print 'optimize p orbital of h atom'
 FB.optimize('h',1,np.logspace(0,2,10),np.linspace(0.3,1,4),5)
 print FB.basis_info
+FB.show_density(40)
+FB.show_error()
 print '\n'
 
 print 'optimize d orbital of h atom'
 FB.optimize('h',2,np.logspace(0,2,10),np.linspace(0.3,1,4),5)
 print FB.basis_info
+FB.show_density(40)
+FB.show_error()
 print '\n'
+
+
+

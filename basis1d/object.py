@@ -1,6 +1,7 @@
 import basis1d.c1dints as c1dints
 import numpy as np
 from scipy.linalg import cho_factor,cho_solve,pinv
+import matplotlib.pyplot as plt
 
 def GTO1d(alpha,l,Ax,xg):
 	norm_factor = np.sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(c1dints.fact2(2*l-1)*pow(np.pi,0.5)))
@@ -66,12 +67,41 @@ class findbasis:
 			#print 'pseudo-inverse is used because S is not positive definite'
 			return np.dot(pinv(S),d)
 
-	def show_density(self,coeff,bf):
+	def represent_density(self,coeff,bf):
 		dens = np.zeros_like(self.xg)
 		for i,c in enumerate(coeff):
 			(alpha,l,Ax) = bf[i]
 			dens += c*GTO1d(alpha,l,Ax,self.xg)
 		return dens
+
+	def show_density(self,idx):
+		plt.figure()
+		bf = self.make_bf(idx)
+		coeff = self.compute_coeff(bf,idx)
+		dens = self.represent_density(coeff,bf)
+		plt.plot(self.xg,self.n_ongrid[idx],'g-',label='original grid')
+		plt.plot(self.xg,dens,'r--',label='on basis')
+		plt.legend(loc=1)
+		plt.xlabel(r'$x$')
+		plt.ylabel(r'$n(x)$')
+		square_error = np.sum((dens-self.n_ongrid[idx])**2)*self.dx
+		plt.title('error=%4.2e'%square_error)
+		plt.show()
+
+	def show_error(self,T=None):
+		if T==None:
+			T = self.T
+		rec = np.empty(len(T))
+		for idx in T:
+			bf = self.make_bf(idx)
+			coeff = self.compute_coeff(bf,idx)
+			dens = self.represent_density(coeff,bf)
+			rec[idx] = np.sum((dens-self.n_ongrid[idx])**2)*self.dx
+		plt.figure()
+		plt.plot(T,np.log10(rec))
+		plt.xlabel('index')
+		plt.ylabel(r'$\log_{10}\int (n-\tilde{n})^2 dx$')
+		plt.show()
 
 	def optimize(self,atom,atom_basis_idx,alist,blist,kfold):
 		"""optimize the basis with a and b in alist and blist"""
@@ -99,7 +129,7 @@ class findbasis:
 					for idx in S:
 						bf = self.make_bf(idx)
 						coeff = self.compute_coeff(bf,idx)
-						dens = self.show_density(coeff,bf)
+						dens = self.represent_density(coeff,bf)
 						err += np.sum((dens-self.n_ongrid[idx])**2)*self.dx
 					err = err/len(S)
 
