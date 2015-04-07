@@ -38,3 +38,15 @@ def overlap1d(alpha1,l1,Ax,alpha2,l2,Bx):
         wx += binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
 				fact2(2*i-1)/pow(2*gamma,i)
     return pre*wx
+
+def overlap1d_matrix(bf):
+    len_bf = len(bf)
+    output = np.empty((len_bf,len_bf))
+    for i in xrange(len_bf):
+        (alpha1,l1,Ax) = bf[i]
+        for j in xrange(i,len_bf):
+            (alpha2,l2,Bx) = bf[j]
+            elem = overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
+            output[i,j] = elem
+            output[j,i] = elem
+    return output
