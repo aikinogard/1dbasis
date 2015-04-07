@@ -1,13 +1,13 @@
 import basis1d.c1dints as c1dints
 import numpy as np
-from scipy.linalg import cho_factor,cho_solve
+from scipy.linalg import cho_factor,cho_solve,pinv
 
 def GTO1d(alpha,l,Ax,xg):
-	norm_factor = np.sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/c1dints.fact2(2*l-1)*pow(np.pi,0.5))
+	norm_factor = np.sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(c1dints.fact2(2*l-1)*pow(np.pi,0.5)))
 	return norm_factor*pow(xg-Ax,l)*np.exp(-alpha*pow(xg-Ax,2))
 
 def make_orbital_bf(atom_angular_basis_info,Ax):
-	(l,N,a,b) = atom_angular_basis_info
+	[l,N,a,b] = atom_angular_basis_info
 	if np.isnan(a+b):
 		return []
 	else:
@@ -24,14 +24,14 @@ class findbasis:
 		coord_atom = ['h','h','o']
 
 		example of basis_info:
-		basis_info = {'h':[(0,n1,a1,b1),(1,n2,a2,b2)],
-						'o':[(0,n3,a3,b3),(1,n4,a4,b4),(2,n5,a5,b5)]}
+		basis_info = {'h':[[0,n1,a1,b1],[1,n2,a2,b2],
+						'o':[[0,n3,a3,b3],[1,n4,a4,b4],[2,n5,a5,b5]]}
 		use n1 s orbitals and n2 p orbitals for each h atom
 		use n3 s orbitals, n4 p orbitals and n5 d orbitals for each o atom
 	"""
 	def __init__(self,n_ongrid,dx,coord,coord_atom,basis_info):
 		self.n_ongrid = n_ongrid
-		self.T = np.arange(len(n_ongrid[0]))
+		self.T = np.arange(len(n_ongrid))
 		self.dx = dx
 		self.xg = np.arange(len(n_ongrid[0]))*dx
 		self.coord = coord
@@ -44,23 +44,27 @@ class findbasis:
 		"""
 		bf = []
 		for i,atom in enumerate(self.coord_atom):
-			Ax = coord[idx][i]
-			for atom_angular_basis_info in basis_info[atom]:
+			Ax = self.coord[idx][i]
+			for atom_angular_basis_info in self.basis_info[atom]:
 				bf += make_orbital_bf(atom_angular_basis_info,Ax)
 		return bf
 
 	def compute_d(self,bf,idx):
 		d = np.empty(len(bf))
-		for i in len(d):
+		for i in xrange(len(d)):
 			(alpha,l,Ax) = bf[i]
-			d[i] = self.dx*np.dot(self.n_ongrid,GTO1d(alpha,l,Ax,self.xg))
+			d[i] = self.dx*np.dot(self.n_ongrid[idx],GTO1d(alpha,l,Ax,self.xg))
 		return d
 
 	def compute_coeff(self,bf,idx):
 		S = c1dints.overlap1d_matrix(bf)
 		d = self.compute_d(bf,idx)
-		Q = cho_factor(S)
-		return cho_solve(Q,d)
+		try:
+			Q = cho_factor(S)
+			return cho_solve(Q,d)
+		except:
+			#print 'pseudo-inverse is used because S is not positive definite'
+			return np.dot(pinv(S),d)
 
 	def show_density(self,coeff,bf):
 		dens = np.zeros_like(self.xg)
@@ -71,8 +75,8 @@ class findbasis:
 
 	def optimize(self,atom,atom_basis_idx,alist,blist,kfold):
 		"""optimize the basis with a and b in alist and blist"""
-		if len(basis_info[atom])-1>atom_basis_idx:
-			raise RuntimeError('atom_basis_idx to large for atom %s'%atom)
+		if len(self.basis_info[atom])-1<atom_basis_idx:
+			raise ValueError('atom_basis_idx to large for atom %s'%atom)
 
 		T = self.T
 		p = T.copy()

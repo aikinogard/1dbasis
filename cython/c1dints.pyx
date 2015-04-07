@@ -39,6 +39,9 @@ def overlap1d(alpha1,l1,Ax,alpha2,l2,Bx):
 				fact2(2*i-1)/pow(2*gamma,i)
     return pre*wx
 
+def norm_fact(alpha,l,Ax):
+    return np.sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(fact2(2*l-1)*pow(np.pi,0.5)))
+
 def overlap1d_matrix(bf):
     len_bf = len(bf)
     output = np.empty((len_bf,len_bf))
@@ -47,6 +50,7 @@ def overlap1d_matrix(bf):
         for j in xrange(i,len_bf):
             (alpha2,l2,Bx) = bf[j]
             elem = overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
-            output[i,j] = elem
-            output[j,i] = elem
+            pre = norm_fact(alpha1,l1,Ax)*norm_fact(alpha2,l2,Bx)
+            output[i,j] = elem*pre
+            output[j,i] = elem*pre
     return output
