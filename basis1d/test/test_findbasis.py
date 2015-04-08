@@ -1,5 +1,6 @@
 import basis1d.object as obj
 import numpy as np
+import matplotlib.pyplot as plt
 
 n_ongrid = np.loadtxt('H2/n.txt')
 dx = 0.05
@@ -17,22 +18,23 @@ FB = obj.findbasis(n_ongrid,dx,coord,coord_atom,basis_info)
 print 'optimize s orbital of h atom'
 FB.optimize('h',0,np.logspace(0,1,10),np.logspace(-4,0,5),5)
 print FB.basis_info
-FB.show_density(40)
-FB.show_error()
+FB.show_density(40,doshow=True)
+FB.show_error(doshow=True)
 print '\n'
 
 print 'optimize p orbital of h atom'
 FB.optimize('h',1,np.logspace(0,1,10),np.logspace(-4,0,5),5)
 print FB.basis_info
-FB.show_density(40)
-FB.show_error()
+FB.show_density(40,doshow=True)
+FB.show_error(doshow=True)
 print '\n'
 
 print 'optimize d orbital of h atom'
 FB.optimize('h',2,np.logspace(-2,2,10),np.logspace(-8,-3,5),5)
 print FB.basis_info
-FB.show_density(40)
+FB.show_density(40,doshow=True)
 FB.show_error()
+plt.savefig('optimize_d.pdf')
 print '\n'
 
 print 'optimized basis_info'

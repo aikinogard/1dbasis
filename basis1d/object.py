@@ -74,8 +74,7 @@ class findbasis:
 			dens += c*GTO1d(alpha,l,Ax,self.xg)
 		return dens
 
-	def show_density(self,idx):
-		plt.figure()
+	def show_density(self,idx,doshow=False):
 		bf = self.make_bf(idx)
 		coeff = self.compute_coeff(bf,idx)
 		dens = self.represent_density(coeff,bf)
@@ -86,9 +85,10 @@ class findbasis:
 		plt.ylabel(r'$n(x)$')
 		square_error = np.sum((dens-self.n_ongrid[idx])**2)*self.dx
 		plt.title('error=%4.2e'%square_error)
-		plt.show()
+		if doshow: plt.show()
+		return
 
-	def show_error(self,T=None):
+	def show_error(self,T=None,doshow=False):
 		if T==None:
 			T = self.T
 		rec = np.empty(len(T))
@@ -97,11 +97,12 @@ class findbasis:
 			coeff = self.compute_coeff(bf,idx)
 			dens = self.represent_density(coeff,bf)
 			rec[idx] = np.sum((dens-self.n_ongrid[idx])**2)*self.dx
-		plt.figure()
+
 		plt.plot(T,np.log10(rec))
 		plt.xlabel('index')
 		plt.ylabel(r'$\log_{10}\int (n-\tilde{n})^2 dx$')
-		plt.show()
+		if doshow: plt.show()
+		return
 
 	def optimize(self,atom,atom_basis_idx,alist,blist,kfold):
 		"""optimize the basis with a and b in alist and blist"""
