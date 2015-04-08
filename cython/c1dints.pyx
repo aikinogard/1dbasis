@@ -45,7 +45,7 @@ cdef double binomial_prefactor(int s,int ia,int ib,double xpa,double xpb):
     """
     cdef double total = 0
     cdef int t
-    for t in range(s+1):
+    for t from 0 <= t < s+1:
         if s-ia <= t <= ib:
             total +=  binomial(ia,s-t)*binomial(ib,t)*\
                         pow(xpa,ia-s+t)*pow(xpb,ib-t)
@@ -60,7 +60,7 @@ cdef double _overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,doubl
     cdef double wx = 0
     cdef double val
 
-    for i in range(1+int(floor(0.5*(l1+l2)))):
+    for i from 0 <= i < 1+int(floor(0.5*(l1+l2))):
         wx += binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
 				_fact2(2*i-1)/pow(2*gamma,i)
     val = pre*wx*norm_fact(alpha1,l1,Ax)*norm_fact(alpha2,l2,Bx)
