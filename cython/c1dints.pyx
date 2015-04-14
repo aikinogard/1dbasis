@@ -72,7 +72,7 @@ cdef double _overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,doubl
     for i from 0 <= i < 1+<int>(floor(0.5*(l1+l2))):
         wx += _binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
 				_fact2(2*i-1)/pow(2*gamma,i)
-    val = pre*wx*norm_fact(alpha1,l1,Ax)*norm_fact(alpha2,l2,Bx)
+    val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
     return val
 
 def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
@@ -81,7 +81,7 @@ def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
     return val
 
 @cython.cdivision(True)
-cdef double norm_fact(double alpha,int l,double Ax):
+cdef double _norm_fact(double alpha,int l,double Ax):
     cdef double val
     val = sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(_fact2(2*l-1)*pow(PI,0.5)))
     return val

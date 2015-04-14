@@ -31,12 +31,11 @@ def overlap1d(alpha1,l1,Ax,alpha2,l2,Bx):
     gamma = alpha1+alpha2
     Px = (alpha1*Ax+alpha2*Bx)/(alpha1+alpha2)
     pre = pow(np.pi/gamma,0.5)*np.exp(-alpha1*alpha2*AB2/gamma)
-
     wx = 0
     for i in range(1+int(np.floor(0.5*(l1+l2)))):
         wx += binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
 				fact2(2*i-1)/pow(2*gamma,i)
-    return pre*wx
+    return pre*wx*norm_fact(alpha1,l1,Ax)*norm_fact(alpha2,l2,Bx)
 
 def norm_fact(alpha,l,Ax):
     return np.sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(fact2(2*l-1)*pow(np.pi,0.5)))
