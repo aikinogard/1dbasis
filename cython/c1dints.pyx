@@ -2,8 +2,10 @@ from __future__ import division
 import numpy as np
 cimport numpy as np
 
-DTYPE = np.double
-ctypedef np.double_t DTYPE_t
+cimport cython
+
+DTYPE = np.float64
+ctypedef np.float64_t DTYPE_t
 
 cdef extern from "math.h":  
     double pow(double x,double y)
@@ -13,7 +15,7 @@ cdef extern from "math.h":
 
 cdef double PI = 3.14159265358979
 
-cdef int factorial(int i):
+cdef int _factorial(int i):
     cdef int val = 1
     while (i>0):
         val = i*val
@@ -31,13 +33,19 @@ def fact2(int i):
     cdef double val = _fact2(i)
     return val
 
-cdef double binomial(int a,int b):
+@cython.cdivision(True)
+cdef int _binomial(int a,int b):
     """Binomial coefficient"""
-    cdef double val
-    val = factorial(a)/(factorial(b)*factorial(a-b))
+    cdef int val = 1
+    cdef int i
+    if b > a-b:
+        b = a-b
+    for i from 0 <= i < b:
+        val *= (a-i)
+        val /= (i+1)
     return val
 
-cdef double binomial_prefactor(int s,int ia,int ib,double xpa,double xpb):
+cdef double _binomial_prefactor(int s,int ia,int ib,double xpa,double xpb):
     """
     The integral prefactor containing the binomial coefficients from Augspurger and Dykstra.
     >>> binomial_prefactor(0,0,0,0,0)
@@ -47,10 +55,11 @@ cdef double binomial_prefactor(int s,int ia,int ib,double xpa,double xpb):
     cdef int t
     for t from 0 <= t < s+1:
         if s-ia <= t <= ib:
-            total +=  binomial(ia,s-t)*binomial(ib,t)*\
+            total +=  _binomial(ia,s-t)*_binomial(ib,t)*\
                         pow(xpa,ia-s+t)*pow(xpb,ib-t)
     return total
 
+@cython.cdivision(True)
 cdef double _overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
     cdef int i
     cdef double AB2 = (Ax-Bx)**2
@@ -60,8 +69,8 @@ cdef double _overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,doubl
     cdef double wx = 0
     cdef double val
 
-    for i from 0 <= i < 1+int(floor(0.5*(l1+l2))):
-        wx += binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
+    for i from 0 <= i < 1+<int>(floor(0.5*(l1+l2))):
+        wx += _binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
 				_fact2(2*i-1)/pow(2*gamma,i)
     val = pre*wx*norm_fact(alpha1,l1,Ax)*norm_fact(alpha2,l2,Bx)
     return val
@@ -71,12 +80,14 @@ def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
     val = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
     return val
 
+@cython.cdivision(True)
 cdef double norm_fact(double alpha,int l,double Ax):
     cdef double val
     val = sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(_fact2(2*l-1)*pow(PI,0.5)))
     return val
 
-def overlap1d_matrix(bf):
+@cython.boundscheck(False) # turn of bounds-checking for entire function
+def overlap1d_matrix(list bf):
     cdef int i
     cdef int j
     cdef int len_bf = len(bf)
@@ -88,12 +99,12 @@ def overlap1d_matrix(bf):
     cdef double Ax
     cdef double Bx
 
-    cdef np.ndarray output = np.zeros((len_bf,len_bf),dtype=DTYPE)
+    cdef np.ndarray[DTYPE_t, ndim=2] output = np.empty((len_bf,len_bf))
     for i from 0 <= i < len_bf:
-        (alpha1,l1,Ax) = bf[i]
+        alpha1,l1,Ax = bf[i]
         for j from i <= j < len_bf:
-            (alpha2,l2,Bx) = bf[j]
-            elem = overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
+            alpha2,l2,Bx = bf[j]
+            elem = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
             output[i,j] = elem
             output[j,i] = elem
     return output
