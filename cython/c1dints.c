@@ -1120,7 +1120,6 @@ static int __pyx_f_7basis1d_7c1dints__fact2(int); /*proto*/
 static int __pyx_f_7basis1d_7c1dints__binomial(int, int); /*proto*/
 static double __pyx_f_7basis1d_7c1dints__binomial_prefactor(int, int, int, double, double); /*proto*/
 static double __pyx_f_7basis1d_7c1dints__overlap1d(double, int, double, double, int, double); /*proto*/
-static double __pyx_f_7basis1d_7c1dints__norm_fact(double, int, double); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_7basis1d_7c1dints_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_7basis1d_7c1dints_DTYPE_t), { 0 }, 0, 'R', 0, 0 };
 #define __Pyx_MODULE_NAME "basis1d.c1dints"
 int __pyx_module_is_main_basis1d__c1dints = 0;
@@ -1746,23 +1745,23 @@ static double __pyx_f_7basis1d_7c1dints__overlap1d(double __pyx_v_alpha1, int __
  *     for i from 0 <= i < 1+<int>(floor(0.5*(l1+l2))):
  *         wx += _binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\             # <<<<<<<<<<<<<<
  * 				_fact2(2*i-1)/pow(2*gamma,i)
- *     val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
+ *     #val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
  */
     __pyx_v_wx = (__pyx_v_wx + ((__pyx_f_7basis1d_7c1dints__binomial_prefactor((2 * __pyx_v_i), __pyx_v_l1, __pyx_v_l2, (__pyx_v_Px - __pyx_v_Ax), (__pyx_v_Px - __pyx_v_Bx)) * __pyx_f_7basis1d_7c1dints__fact2(((2 * __pyx_v_i) - 1))) / pow((2.0 * __pyx_v_gamma), __pyx_v_i)));
   }
 
-  /* "cython/c1dints.pyx":75
- *         wx += _binomial_prefactor(2*i,l1,l2,Px-Ax,Px-Bx)*\
+  /* "cython/c1dints.pyx":76
  * 				_fact2(2*i-1)/pow(2*gamma,i)
- *     val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)             # <<<<<<<<<<<<<<
+ *     #val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
+ *     val = pre*wx             # <<<<<<<<<<<<<<
  *     return val
  * 
  */
-  __pyx_v_val = (((__pyx_v_pre * __pyx_v_wx) * __pyx_f_7basis1d_7c1dints__norm_fact(__pyx_v_alpha1, __pyx_v_l1, __pyx_v_Ax)) * __pyx_f_7basis1d_7c1dints__norm_fact(__pyx_v_alpha2, __pyx_v_l2, __pyx_v_Bx));
+  __pyx_v_val = (__pyx_v_pre * __pyx_v_wx);
 
-  /* "cython/c1dints.pyx":76
- * 				_fact2(2*i-1)/pow(2*gamma,i)
- *     val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
+  /* "cython/c1dints.pyx":77
+ *     #val = pre*wx*_norm_fact(alpha1,l1,Ax)*_norm_fact(alpha2,l2,Bx)
+ *     val = pre*wx
  *     return val             # <<<<<<<<<<<<<<
  * 
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
@@ -1784,7 +1783,7 @@ static double __pyx_f_7basis1d_7c1dints__overlap1d(double __pyx_v_alpha1, int __
   return __pyx_r;
 }
 
-/* "cython/c1dints.pyx":78
+/* "cython/c1dints.pyx":79
  *     return val
  * 
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):             # <<<<<<<<<<<<<<
@@ -1832,31 +1831,31 @@ static PyObject *__pyx_pw_7basis1d_7c1dints_3overlap1d(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_l1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_alpha2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_l2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Bx)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, 5); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "overlap1d") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "overlap1d") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
@@ -1868,16 +1867,16 @@ static PyObject *__pyx_pw_7basis1d_7c1dints_3overlap1d(PyObject *__pyx_self, PyO
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
       values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
     }
-    __pyx_v_alpha1 = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_alpha1 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_l1 = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_l1 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_Ax = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_Ax == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_alpha2 = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_alpha2 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_l2 = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_l2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_Bx = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_Bx == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_alpha1 = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_alpha1 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_l1 = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_l1 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_Ax = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_Ax == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_alpha2 = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_alpha2 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_l2 = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_l2 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_Bx = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_Bx == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("overlap1d", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("basis1d.c1dints.overlap1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1900,7 +1899,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_2overlap1d(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("overlap1d", 0);
 
-  /* "cython/c1dints.pyx":80
+  /* "cython/c1dints.pyx":81
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):
  *     cdef double val
  *     val = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)             # <<<<<<<<<<<<<<
@@ -1909,7 +1908,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_2overlap1d(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_val = __pyx_f_7basis1d_7c1dints__overlap1d(__pyx_v_alpha1, __pyx_v_l1, __pyx_v_Ax, __pyx_v_alpha2, __pyx_v_l2, __pyx_v_Bx);
 
-  /* "cython/c1dints.pyx":81
+  /* "cython/c1dints.pyx":82
  *     cdef double val
  *     val = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
  *     return val             # <<<<<<<<<<<<<<
@@ -1917,13 +1916,13 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_2overlap1d(CYTHON_UNUSED PyObject *_
  * @cython.cdivision(True)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_val); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_val); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython/c1dints.pyx":78
+  /* "cython/c1dints.pyx":79
  *     return val
  * 
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):             # <<<<<<<<<<<<<<
@@ -1942,7 +1941,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_2overlap1d(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "cython/c1dints.pyx":84
+/* "cython/c1dints.pyx":85
  * 
  * @cython.cdivision(True)
  * cdef double _norm_fact(double alpha,int l,double Ax):             # <<<<<<<<<<<<<<
@@ -1956,7 +1955,7 @@ static double __pyx_f_7basis1d_7c1dints__norm_fact(double __pyx_v_alpha, int __p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_norm_fact", 0);
 
-  /* "cython/c1dints.pyx":86
+  /* "cython/c1dints.pyx":87
  * cdef double _norm_fact(double alpha,int l,double Ax):
  *     cdef double val
  *     val = sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(_fact2(2*l-1)*pow(PI,0.5)))             # <<<<<<<<<<<<<<
@@ -1965,7 +1964,7 @@ static double __pyx_f_7basis1d_7c1dints__norm_fact(double __pyx_v_alpha, int __p
  */
   __pyx_v_val = sqrt(((pow(2.0, ((2 * __pyx_v_l) + 0.5)) * pow(__pyx_v_alpha, (__pyx_v_l + 0.5))) / (__pyx_f_7basis1d_7c1dints__fact2(((2 * __pyx_v_l) - 1)) * pow(__pyx_v_7basis1d_7c1dints_PI, 0.5))));
 
-  /* "cython/c1dints.pyx":87
+  /* "cython/c1dints.pyx":88
  *     cdef double val
  *     val = sqrt(pow(2,2*l+0.5)*pow(alpha,l+0.5)/(_fact2(2*l-1)*pow(PI,0.5)))
  *     return val             # <<<<<<<<<<<<<<
@@ -1975,7 +1974,7 @@ static double __pyx_f_7basis1d_7c1dints__norm_fact(double __pyx_v_alpha, int __p
   __pyx_r = __pyx_v_val;
   goto __pyx_L0;
 
-  /* "cython/c1dints.pyx":84
+  /* "cython/c1dints.pyx":85
  * 
  * @cython.cdivision(True)
  * cdef double _norm_fact(double alpha,int l,double Ax):             # <<<<<<<<<<<<<<
@@ -1989,7 +1988,7 @@ static double __pyx_f_7basis1d_7c1dints__norm_fact(double __pyx_v_alpha, int __p
   return __pyx_r;
 }
 
-/* "cython/c1dints.pyx":90
+/* "cython/c1dints.pyx":91
  * 
  * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def overlap1d_matrix(list bf):             # <<<<<<<<<<<<<<
@@ -2007,7 +2006,7 @@ static PyObject *__pyx_pw_7basis1d_7c1dints_5overlap1d_matrix(PyObject *__pyx_se
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("overlap1d_matrix (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_bf), (&PyList_Type), 1, "bf", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_bf), (&PyList_Type), 1, "bf", 1))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_r = __pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(__pyx_self, ((PyObject*)__pyx_v_bf));
 
   /* function exit code */
@@ -2060,7 +2059,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
   __pyx_pybuffernd_output.data = NULL;
   __pyx_pybuffernd_output.rcbuffer = &__pyx_pybuffer_output;
 
-  /* "cython/c1dints.pyx":93
+  /* "cython/c1dints.pyx":94
  *     cdef int i
  *     cdef int j
  *     cdef int len_bf = len(bf)             # <<<<<<<<<<<<<<
@@ -2069,28 +2068,28 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
  */
   if (unlikely(__pyx_v_bf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_bf); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 93; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_GET_SIZE(__pyx_v_bf); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 94; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_len_bf = __pyx_t_1;
 
-  /* "cython/c1dints.pyx":102
+  /* "cython/c1dints.pyx":103
  *     cdef double Bx
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] output = np.empty((len_bf,len_bf))             # <<<<<<<<<<<<<<
  *     for i from 0 <= i < len_bf:
  *         alpha1,l1,Ax = bf[i]
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_len_bf); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_len_bf); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_len_bf); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_len_bf); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
@@ -2109,28 +2108,28 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else {
-    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __Pyx_GIVEREF(__pyx_t_5); __pyx_t_5 = NULL;
     PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_6);
     __pyx_t_6 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_7 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_output.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_nn___pyx_t_7basis1d_7c1dints_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_output = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_output.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_output.diminfo[0].strides = __pyx_pybuffernd_output.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_output.diminfo[0].shape = __pyx_pybuffernd_output.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_output.diminfo[1].strides = __pyx_pybuffernd_output.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_output.diminfo[1].shape = __pyx_pybuffernd_output.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2138,7 +2137,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
   __pyx_v_output = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "cython/c1dints.pyx":103
+  /* "cython/c1dints.pyx":104
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] output = np.empty((len_bf,len_bf))
  *     for i from 0 <= i < len_bf:             # <<<<<<<<<<<<<<
@@ -2148,7 +2147,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
   __pyx_t_8 = __pyx_v_len_bf;
   for (__pyx_v_i = 0; __pyx_v_i < __pyx_t_8; __pyx_v_i++) {
 
-    /* "cython/c1dints.pyx":104
+    /* "cython/c1dints.pyx":105
  *     cdef np.ndarray[DTYPE_t, ndim=2] output = np.empty((len_bf,len_bf))
  *     for i from 0 <= i < len_bf:
  *         alpha1,l1,Ax = bf[i]             # <<<<<<<<<<<<<<
@@ -2157,9 +2156,9 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
  */
     if (unlikely(__pyx_v_bf == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_bf, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_bf, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_2);
     if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
       PyObject* sequence = __pyx_t_2;
@@ -2171,7 +2170,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
       if (unlikely(size != 3)) {
         if (size > 3) __Pyx_RaiseTooManyValuesError(3);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -2187,17 +2186,17 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_6);
       #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_9 = Py_TYPE(__pyx_t_5)->tp_iternext;
@@ -2207,7 +2206,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
       __Pyx_GOTREF(__pyx_t_3);
       index = 2; __pyx_t_6 = __pyx_t_9(__pyx_t_5); if (unlikely(!__pyx_t_6)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_9 = NULL;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       goto __pyx_L6_unpacking_done;
@@ -2215,20 +2214,20 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_9 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_L6_unpacking_done:;
     }
-    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 105; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_v_alpha1 = __pyx_t_10;
     __pyx_v_l1 = __pyx_t_11;
     __pyx_v_Ax = __pyx_t_12;
 
-    /* "cython/c1dints.pyx":105
+    /* "cython/c1dints.pyx":106
  *     for i from 0 <= i < len_bf:
  *         alpha1,l1,Ax = bf[i]
  *         for j from i <= j < len_bf:             # <<<<<<<<<<<<<<
@@ -2238,7 +2237,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
     __pyx_t_11 = __pyx_v_len_bf;
     for (__pyx_v_j = __pyx_v_i; __pyx_v_j < __pyx_t_11; __pyx_v_j++) {
 
-      /* "cython/c1dints.pyx":106
+      /* "cython/c1dints.pyx":107
  *         alpha1,l1,Ax = bf[i]
  *         for j from i <= j < len_bf:
  *             alpha2,l2,Bx = bf[j]             # <<<<<<<<<<<<<<
@@ -2247,9 +2246,9 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
  */
       if (unlikely(__pyx_v_bf == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_bf, __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 1, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_bf, __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 1, 1, 0); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_2);
       if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
         PyObject* sequence = __pyx_t_2;
@@ -2261,7 +2260,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
         if (unlikely(size != 3)) {
           if (size > 3) __Pyx_RaiseTooManyValuesError(3);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         #if CYTHON_COMPILING_IN_CPYTHON
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -2277,17 +2276,17 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_4);
         #else
-        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_4);
         #endif
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_t_9 = Py_TYPE(__pyx_t_5)->tp_iternext;
@@ -2297,7 +2296,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
         __Pyx_GOTREF(__pyx_t_3);
         index = 2; __pyx_t_4 = __pyx_t_9(__pyx_t_5); if (unlikely(!__pyx_t_4)) goto __pyx_L9_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_4);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_5), 3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_t_9 = NULL;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         goto __pyx_L10_unpacking_done;
@@ -2305,20 +2304,20 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_t_9 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_L10_unpacking_done:;
       }
-      __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_12 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_13 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_13 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_13 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_13 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_alpha2 = __pyx_t_12;
       __pyx_v_l2 = __pyx_t_13;
       __pyx_v_Bx = __pyx_t_10;
 
-      /* "cython/c1dints.pyx":107
+      /* "cython/c1dints.pyx":108
  *         for j from i <= j < len_bf:
  *             alpha2,l2,Bx = bf[j]
  *             elem = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)             # <<<<<<<<<<<<<<
@@ -2327,7 +2326,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
  */
       __pyx_v_elem = __pyx_f_7basis1d_7c1dints__overlap1d(__pyx_v_alpha1, __pyx_v_l1, __pyx_v_Ax, __pyx_v_alpha2, __pyx_v_l2, __pyx_v_Bx);
 
-      /* "cython/c1dints.pyx":108
+      /* "cython/c1dints.pyx":109
  *             alpha2,l2,Bx = bf[j]
  *             elem = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
  *             output[i,j] = elem             # <<<<<<<<<<<<<<
@@ -2340,7 +2339,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
       if (__pyx_t_14 < 0) __pyx_t_14 += __pyx_pybuffernd_output.diminfo[1].shape;
       *__Pyx_BufPtrStrided2d(__pyx_t_7basis1d_7c1dints_DTYPE_t *, __pyx_pybuffernd_output.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_output.diminfo[0].strides, __pyx_t_14, __pyx_pybuffernd_output.diminfo[1].strides) = __pyx_v_elem;
 
-      /* "cython/c1dints.pyx":109
+      /* "cython/c1dints.pyx":110
  *             elem = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
  *             output[i,j] = elem
  *             output[j,i] = elem             # <<<<<<<<<<<<<<
@@ -2354,7 +2353,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
     }
   }
 
-  /* "cython/c1dints.pyx":110
+  /* "cython/c1dints.pyx":111
  *             output[i,j] = elem
  *             output[j,i] = elem
  *     return output             # <<<<<<<<<<<<<<
@@ -2364,7 +2363,7 @@ static PyObject *__pyx_pf_7basis1d_7c1dints_4overlap1d_matrix(CYTHON_UNUSED PyOb
   __pyx_r = ((PyObject *)__pyx_v_output);
   goto __pyx_L0;
 
-  /* "cython/c1dints.pyx":90
+  /* "cython/c1dints.pyx":91
  * 
  * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def overlap1d_matrix(list bf):             # <<<<<<<<<<<<<<
@@ -4548,29 +4547,29 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__7);
   __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_li_basis1d_cython_c1dints, __pyx_n_s_fact2, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "cython/c1dints.pyx":78
+  /* "cython/c1dints.pyx":79
  *     return val
  * 
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):             # <<<<<<<<<<<<<<
  *     cdef double val
  *     val = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
  */
-  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_alpha1, __pyx_n_s_l1, __pyx_n_s_Ax, __pyx_n_s_alpha2, __pyx_n_s_l2, __pyx_n_s_Bx, __pyx_n_s_val); if (unlikely(!__pyx_tuple__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_alpha1, __pyx_n_s_l1, __pyx_n_s_Ax, __pyx_n_s_alpha2, __pyx_n_s_l2, __pyx_n_s_Bx, __pyx_n_s_val); if (unlikely(!__pyx_tuple__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(6, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_li_basis1d_cython_c1dints, __pyx_n_s_overlap1d, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(6, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_li_basis1d_cython_c1dints, __pyx_n_s_overlap1d, 79, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "cython/c1dints.pyx":90
+  /* "cython/c1dints.pyx":91
  * 
  * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def overlap1d_matrix(list bf):             # <<<<<<<<<<<<<<
  *     cdef int i
  *     cdef int j
  */
-  __pyx_tuple__11 = PyTuple_Pack(12, __pyx_n_s_bf, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_len_bf, __pyx_n_s_elem, __pyx_n_s_alpha1, __pyx_n_s_alpha2, __pyx_n_s_l1, __pyx_n_s_l2, __pyx_n_s_Ax, __pyx_n_s_Bx, __pyx_n_s_output); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__11 = PyTuple_Pack(12, __pyx_n_s_bf, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_len_bf, __pyx_n_s_elem, __pyx_n_s_alpha1, __pyx_n_s_alpha2, __pyx_n_s_l1, __pyx_n_s_l2, __pyx_n_s_Ax, __pyx_n_s_Bx, __pyx_n_s_output); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 12, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_li_basis1d_cython_c1dints, __pyx_n_s_overlap1d_matrix, 90, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 12, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_li_basis1d_cython_c1dints, __pyx_n_s_overlap1d_matrix, 91, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4730,28 +4729,28 @@ PyMODINIT_FUNC PyInit_c1dints(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_fact2, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 32; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython/c1dints.pyx":78
+  /* "cython/c1dints.pyx":79
  *     return val
  * 
  * def overlap1d(double alpha1,int l1,double Ax,double alpha2,int l2,double Bx):             # <<<<<<<<<<<<<<
  *     cdef double val
  *     val = _overlap1d(alpha1,l1,Ax,alpha2,l2,Bx)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7basis1d_7c1dints_3overlap1d, NULL, __pyx_n_s_basis1d_c1dints); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7basis1d_7c1dints_3overlap1d, NULL, __pyx_n_s_basis1d_c1dints); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_overlap1d, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 78; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_overlap1d, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 79; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython/c1dints.pyx":90
+  /* "cython/c1dints.pyx":91
  * 
  * @cython.boundscheck(False) # turn of bounds-checking for entire function
  * def overlap1d_matrix(list bf):             # <<<<<<<<<<<<<<
  *     cdef int i
  *     cdef int j
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7basis1d_7c1dints_5overlap1d_matrix, NULL, __pyx_n_s_basis1d_c1dints); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7basis1d_7c1dints_5overlap1d_matrix, NULL, __pyx_n_s_basis1d_c1dints); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_overlap1d_matrix, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_overlap1d_matrix, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 91; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "cython/c1dints.pyx":1
