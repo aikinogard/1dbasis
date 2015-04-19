@@ -1,91 +1,11 @@
 import numpy as np
+from basis1d.pgbf import pgbf
+from basis1d.cgbf import cgbf
+from basis1d.int_tools import S
 from scipy.linalg import cho_factor,cho_solve,pinv
 import matplotlib.pyplot as plt
-import array
-from basis1d.c1dints import overlap1d,fact2
 
 sym2pow = {'s':0,'p':1,'d':2,'f':3,'g':4}
-
-def S(a,b):
-    if b.contracted:
-        return sum(cb*S(pb,a) for (cb,pb) in b)
-    elif a.contracted:
-        return sum(ca*S(b,pa) for (ca,pa) in a)
-    return a.norm*b.norm*overlap1d(a.expn,a.power,
-                                 a.origin,b.expn,b.power,b.origin)
-
-class pgbf:
-	contracted = False
-	def __init__(self,expn,origin=0,power=0):
-		self.expn = float(expn)
-		self.origin = float(origin)
-		self.power = power
-		self._normalize()
-
-	def __repr__(self):
-		return "pgbf(%f,%f,%d)"%(self.expn,self.origin,self.power)
-
-	def __call__(self,x):
-		"Compute the amplitude of the PGBF at point x"
-		return self.grid(x)
-
-	def grid(self,xs):
-		dx = xs-self.origin
-		return self.norm*dx**self.power*np.exp(-self.expn*dx**2)
-
-	def _normalize(self):
-		self.norm = np.sqrt(pow(2,2*self.power+0.5)*
-                            pow(self.expn,self.power+0.5)/
-                            fact2(2*self.power-1)/np.sqrt(np.pi))
-
-class cgbf:
-	contracted = True
-	def __init__(self,origin=0,power=0,exps=[],coefs=[]):
-		self.origin = float(origin)
-		self.power = float(power)
-
-		# cgbf is made by list of pgbf
-		self.pgbfs = []
-		# the coefficient of each pgbf
-		self.coefs = array.array('d')
-		# normalization constant of pgbf
-		self.pnorms = array.array('d')
-		# exponential of each pgbf
-		self.pexps = array.array('d')
-
-		for expn,coef in zip(exps,coefs):
-			self.add_pgbf(expn,coef,False)
-
-		if self.pgbfs:
-			self.normalize()
-
-	def __getitem__(self,item):
-		return list(zip(self.coefs,self.pgbfs)).__getitem__(item)
-
-	def __repr__(self):
-		return "cgbf(%f,%d,%s,%s)"%(self.origin,self.power,list(self.pexps),list(self.coefs))
-
-	def __call__(self,*args,**kwargs):
-		return sum(c*p(*args,**kwargs) for c,p in self)
-
-	def grid(self,xs):
-		return sum(c*p.grid(xs) for c,p in self)
-
-	def add_pgbf(self,expn,coef,renormalize=True):
-		self.pgbfs.append(pgbf(expn,self.origin,self.power))
-		self.coefs.append(coef)
-
-		if renormalize:
-			self.normalize()
-
-		p = self.pgbfs[-1]
-		self.pnorms.append(p.norm)
-		self.pexps.append(p.expn)
-
-	def normalize(self):
-		Saa_sqrt = np.sqrt(S(self,self))
-		for i in range(len(self.coefs)):
-			self.coefs[i] /= Saa_sqrt
 
 class findbasis:
 	"""
