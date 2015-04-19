@@ -1,7 +1,8 @@
 import numpy as np
 from basis1d.pgbf import pgbf
 from basis1d.cgbf import cgbf
-from basis1d.int_tools import S
+from basis1d.tools import S
+from basis1d.basislib import basis
 from scipy.linalg import cho_factor,cho_solve,pinv
 import matplotlib.pyplot as plt
 
@@ -23,6 +24,8 @@ class findbasis:
 							 (0.8, 0.4066825517248162),
 							 (0.32, 0.5468171685012185)])]
 					}
+		or
+		basis_data = basis['minix']
 	"""
 	def __init__(self,n_lib,dx,atom_x_lib,atoms_Z,basis_data):
 		self.n_lib = n_lib
@@ -33,6 +36,22 @@ class findbasis:
 		self.atom_x_lib = atom_x_lib
 		self.atoms_Z = atoms_Z
 		self.basis_data = basis_data
+		self.name = self.stoich()
+
+	def stoich(self):
+        from collections import Counter
+        from basis1d.tools import symbol	
+        cnt = Counter()
+        for Z in self.atoms_Z:
+            cnt[Z] += 1
+        keys = sorted(cnt.keys())
+        s = []
+        for key in keys:
+            if cnt[key] == 1:
+                s.append(symbol[key])
+            else:
+                s.append("%s%d" % (symbol[key],cnt[key]))
+        return "".join(s)
 
 	def make_bfs(self,atom_x,eval_S=False):
 		self.bfs = []
@@ -147,8 +166,19 @@ class findbasis:
 			self.basis_data[Z].extend(shell_data)
 		return shell_data
 
-	def save_basis_data(self):
-		pass
+	def compute_nc_lib(self,T=None):
+		"return the coefficients of each density in n_lib on current basis_data"
+		if T==None:
+			T = self.T
+		self.make_bfs(self.atom_x_lib[0])
+		nc_lib = np.empty((len(T),len(self.bfs)))
+		for i,idx in enumerate(T):
+			coeff,n_fit = self.fit_density(idx)
+			nc_lib[i] = coeff
+		return nc_lib
+
+
+
 
 
 

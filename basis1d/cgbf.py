@@ -1,7 +1,7 @@
 import numpy as np
 import array
 from basis1d.pgbf import pgbf
-from basis1d.int_tools import S
+from basis1d.tools import S
 
 class cgbf:
 	contracted = True
