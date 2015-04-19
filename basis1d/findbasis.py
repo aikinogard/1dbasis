@@ -39,19 +39,19 @@ class findbasis:
 		self.name = self.stoich()
 
 	def stoich(self):
-        from collections import Counter
-        from basis1d.tools import symbol	
-        cnt = Counter()
-        for Z in self.atoms_Z:
-            cnt[Z] += 1
-        keys = sorted(cnt.keys())
-        s = []
-        for key in keys:
-            if cnt[key] == 1:
-                s.append(symbol[key])
-            else:
-                s.append("%s%d" % (symbol[key],cnt[key]))
-        return "".join(s)
+		from collections import Counter
+		from basis1d.tools import symbol	
+		cnt = Counter()
+		for Z in self.atoms_Z:
+			cnt[Z] += 1
+		keys = sorted(cnt.keys())
+		s = []
+		for key in keys:
+			if cnt[key] == 1:
+				s.append(symbol[key])
+			else:
+				s.append("%s%d" % (symbol[key],cnt[key]))
+		return "".join(s)
 
 	def make_bfs(self,atom_x,eval_S=False):
 		self.bfs = []
