@@ -214,7 +214,7 @@ class findbasis:
 		
 		if fobj:
 			from basis1d.tools import dict2str
-			record = ['import numpy as np','dens_dict=\\',dict2str(dens_dict)]
+			record = ['import numpy as np','%s=\\'%name,dict2str(dens_dict)]
 			fobj.write('\n'.join(record))
 		else:
 			return dens_dict
