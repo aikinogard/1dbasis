@@ -22,3 +22,37 @@ symbol = [
     "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu",
     "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
     "Tl","Pb","Bi","Po","At","Rn"]
+
+def dict2str(dic,djoint=True):
+    from types import StringType, DictType
+    lines = ['{']
+    for key in dic.keys():
+        if type(key)==StringType:
+            lines.append("\t'%s':"%key)
+        else:
+            lines.append("\t%s:"%key)
+
+        if type(dic[key])==StringType:
+            lines.append("\t\t'%s',"%dic[key])
+        elif 'numpy.ndarray' in str(type(dic[key])):
+            lines.append("\t\tnp.array(%s),"%dic[key].tolist())
+        elif type(dic[key])==DictType:
+            subdiclines = dict2str(dic[key],djoint=False)
+            for subdicline in subdiclines:
+                lines.append('\t\t'+subdicline)
+            lines[-1] = lines[-1]+','
+        else:
+            lines.append("\t\t%s,"%dic[key])
+    lines.append('}')
+    if djoint:
+        return '\n'.join(lines)
+    else:
+        return lines
+
+
+
+
+
+
+
+

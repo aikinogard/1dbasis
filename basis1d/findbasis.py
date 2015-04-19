@@ -5,6 +5,7 @@ from basis1d.tools import S
 from basis1d.basislib import basis
 from scipy.linalg import cho_factor,cho_solve,pinv
 import matplotlib.pyplot as plt
+from types import StringType, DictType
 
 sym2pow = {'s':0,'p':1,'d':2,'f':3,'g':4}
 
@@ -35,7 +36,19 @@ class findbasis:
 		self.xg = np.arange(self.Ng)*dx
 		self.atom_x_lib = atom_x_lib
 		self.atoms_Z = atoms_Z
-		self.basis_data = basis_data
+		self.from_basislib = False
+		if type(basis_data)==StringType:
+			try:
+				#search in the basislib
+				self.basis_data = basis[basis_data]
+				self.basis_name = basis_data
+				self.from_basislib = True
+			except:
+				self.basis_data = {}
+				self.basis_name = basis_data
+		elif type(basis_data)==DictType:
+			self.basis_data = basis_data
+			self.basis_name = 'user-defined'
 		self.name = self.stoich()
 
 	def stoich(self):
@@ -164,6 +177,9 @@ class findbasis:
 		print 'optimized new shell: %s'%shell_data
 		if doadd:
 			self.basis_data[Z].extend(shell_data)
+			if self.from_basislib:
+				self.from_basislib = False
+				self.basis_name = 'user-defined'
 		return shell_data
 
 	def compute_nc_lib(self,T=None):
@@ -177,6 +193,31 @@ class findbasis:
 			nc_lib[i] = coeff
 		return nc_lib
 
+	def output(self,T=None,name=None,fobj=None):
+		"output density information to a .py file"
+		dens_dict = {}
+
+		if T==None:
+			T = self.T
+
+		if name is None:
+			name = self.name
+		dens_dict['name'] = name
+
+		dens_dict['atoms_Z'] = self.atoms_Z
+
+		dens_dict['basis_name'] = self.basis_name
+		dens_dict['basis_data'] = self.basis_data
+
+		dens_dict['nc_lib'] = self.compute_nc_lib(T)
+		dens_dict['atom_x_lib'] = self.atom_x_lib[T]
+		
+		if fobj:
+			from basis1d.tools import dict2str
+			record = ['import numpy as np','dens_dict=\\',dict2str(dens_dict)]
+			fobj.write('\n'.join(record))
+		else:
+			return dens_dict
 
 
 
