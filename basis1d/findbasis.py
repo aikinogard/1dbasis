@@ -143,10 +143,18 @@ class findbasis:
 
 		return coeff,n_fit
 
-	def error(self,idx,n_fit=None):
-		if n_fit==None:
-			coeff,n_fit = self.fit_density(idx)
-		return np.sum((n_fit - self.n_lib[idx])**2)*self.dx
+	def error(self,idx=None,n_fit=None):
+		if idx!=None:
+			if n_fit==None:
+				coeff,n_fit = self.fit_density(idx)
+			return np.sum((n_fit - self.n_lib[idx])**2)*self.dx
+		else:
+			err = np.empty(self.Nt)
+			for idx in self.T:
+				coeff,n_fit = self.fit_density(idx)
+				err[idx] = np.sum((n_fit - self.n_lib[idx])**2)*self.dx
+			return err
+
 
 	def show_density(self,ns,doshow=False,names=None):
 		if names:

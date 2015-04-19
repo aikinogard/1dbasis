@@ -18,7 +18,7 @@ basis_data = \
 
 print 'initialize class...\n'
 fb = findbasis(n_lib,dx,atom_x_lib,atoms_Z,basis_data)
-
+print 'fitting errors on n_lib: \n%s'%fb.error() 
 print '==============='
 print 'construct basis for atom position [2.,6.] from basis_data'
 Smat = fb.make_bfs([2.,6.],True)
