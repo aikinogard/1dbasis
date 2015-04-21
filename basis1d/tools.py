@@ -25,6 +25,7 @@ symbol = [
 
 def dict2str(dic,djoint=True):
     from types import StringType, DictType
+    from numpy import ndarray
     lines = ['{']
     for key in dic.keys():
         if type(key)==StringType:
@@ -34,7 +35,7 @@ def dict2str(dic,djoint=True):
 
         if type(dic[key])==StringType:
             lines.append("\t\t'%s',"%dic[key])
-        elif 'numpy.ndarray' in str(type(dic[key])):
+        elif type(dic[key]) == ndarray:
             lines.append("\t\tnp.array(%s),"%dic[key].tolist())
         elif type(dic[key])==DictType:
             subdiclines = dict2str(dic[key],djoint=False)
