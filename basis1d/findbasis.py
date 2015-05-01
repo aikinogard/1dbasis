@@ -58,6 +58,9 @@ class findbasis:
     def __getitem__(self, i):
         return self.densities.__getitem__(i)
 
+    def __len__(self):
+        return self.densities.__len__()
+
     def stoich(self):
         from collections import Counter
         from basis1d.tools import symbol
@@ -109,6 +112,10 @@ class findbasis:
         print 'number of new basis: %d\n' % Nn
 
         p = np.arange(self.Nt)
+        if self.Nt % kfold:
+            addin = kfold - self.Nt % kfold
+            p = np.append(p, np.random.choice(self.Nt, addin))
+
         np.random.shuffle(p)
         p = np.reshape(p, (kfold, -1))
 
