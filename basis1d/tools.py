@@ -93,9 +93,9 @@ def sym_uniform_atoms_x(xg, b, N):
 
         case 4
 
-        >>> xg = [-0.7, -0.5, -0.3, -0.1, 0.1, 0.3, 0.5, 0.7]
-        >>> sym_uniform_atoms_x(xg, 0.2, 4)
-        array([-0.3, -0.1,  0.1,  0.3])
+        >>> xg = [-0.9, -0.7, -0.5, -0.3, -0.1, 0.1, 0.3, 0.5, 0.7, 0.9]
+        >>> sym_uniform_atoms_x(xg, 0.6, 4)
+        array([-0.9, -0.3,  0.3,  0.9])
 
     """
     dx = xg[1] - xg[0]
@@ -121,7 +121,9 @@ def sym_uniform_atoms_x(xg, b, N):
             return np.arange(-d + 0.5, d + 0.5) * b
         else:
             # case 4
-            return np.arange(-d - 1, d + 2, 2) * b / 2
+            assert round(b / dx) % 2
+            return np.arange(-d + 0.5, d + 0.5) * b
+
 
 if __name__ == '__main__':
     import doctest
