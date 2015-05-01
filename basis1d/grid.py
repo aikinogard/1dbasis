@@ -21,12 +21,13 @@ class DensityGrid:
             This is a class including the information for 1d density on grid
     """
 
-    def __init__(self, xg, n, atoms_x, atoms_Z):
+    def __init__(self, xg, n, atoms_x, atoms_Z, verbose=False):
         self.xg = np.array(xg)
         self.dx = xg[1] - xg[0]
         self.n = np.array(n)
         self.atoms_x = np.array(atoms_x)
         self.atoms_Z = atoms_Z
+        self.verbose = verbose
 
     def make_bfs(self, basis_data):
         if isinstance(basis_data, str):
@@ -62,7 +63,8 @@ class DensityGrid:
             Q = cho_factor(self.Smat + 1e-14 * np.eye(len(self.Smat)))
             self.c = cho_solve(Q, d)
         except:
-            print 'pinv is used because there is problem in cho_factor'
+            if self.verbose:
+                print 'pinv is used because there is problem in cho_factor'
             self.c = np.dot(pinv(self.Smat), d)
 
     def grid(self, xg=None):

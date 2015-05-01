@@ -31,16 +31,19 @@ class findbasis:
         basis_data = basis['minix']
     """
 
-    def __init__(self, n_lib, xg_lib, atoms_x_lib, atoms_Z, basis_data):
+    def __init__(self, n_lib, xg_lib, atoms_x_lib, atoms_Z, basis_data,
+                 verbose=False):
         assert len(n_lib) == len(xg_lib) == len(atoms_x_lib)
 
         self.Nt = len(n_lib)
         self.densities = []
         for i in range(self.Nt):
             self.densities.append(
-                DensityGrid(xg_lib[i], n_lib[i], atoms_x_lib[i], atoms_Z))
+                DensityGrid(xg_lib[i], n_lib[i], atoms_x_lib[i],
+                            atoms_Z, verbose))
         self.atoms_x_lib = np.array(atoms_x_lib)
         self.atoms_Z = atoms_Z
+        self.verbose = verbose
 
         if isinstance(basis_data, str):
             try:
@@ -77,7 +80,9 @@ class findbasis:
         return "".join(s)
 
     def fit_density(self):
-        for density in self.densities:
+        for i, density in enumerate(self.densities):
+            if self.verbose:
+                print 'fitting density for #%d' % i
             density.make_bfs(self.basis_data)
             density.compute_c()
 
