@@ -116,7 +116,7 @@ class findbasis:
         a_opt = np.empty(kfold)
         b_opt = np.empty(kfold)
 
-        err_min = np.inf
+        err_min[:] = np.inf
 
         for i, S in enumerate(p):
             for a in alist:
@@ -125,7 +125,7 @@ class findbasis:
                         [(shell, [(a * b ** m, 1.)]) for m in range(Nn)])
                     err = 0.
                     for idx in S:
-                        self.densities[idx].make_bfs()
+                        self.densities[idx].make_bfs(self.basis_data)
                         self.densities[idx].compute_c()
                         err += self.densities[idx].get_error()
                     err = err / len(S)

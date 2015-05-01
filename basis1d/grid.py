@@ -1,6 +1,6 @@
 from itertools import combinations_with_replacement
 import numpy as np
-from scipy.linalg import solve
+from scipy.linalg import pinv
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 mpl.rcParams.update({'font.size': 20})
@@ -57,7 +57,7 @@ class DensityGrid:
         d = np.empty(Nbf)
         for i, bf in enumerate(self.bfs):
             d[i] = self.dx * np.dot(self.n, bf.grid(self.xg))
-        self.c = solve(self.Smat, d)
+        self.c = np.dot(pinv(self.Smat), d)
 
     def grid(self, xg=None):
         if xg is None:

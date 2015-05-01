@@ -17,5 +17,7 @@ for i in range(Nt):
 
 print 'initialize class...\n'
 fb = findbasis(n_lib, xg_lib, atoms_x_lib, atoms_Z, 'universal')
+# fb.optimize_bf(Z=1, shell='p', alist=np.logspace(-1, 1, 10),
+#                blist=np.linspace(0.3, 0.6, 10), Nn=2, kfold=10, doadd=True)
 print 'output dens_dict'
 fb.output(fobj=open('dens_dict.py', 'w'))
