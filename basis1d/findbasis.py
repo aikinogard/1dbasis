@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from basis1d.basislib import basis
 from basis1d.grid import DensityGrid
 
@@ -123,7 +124,8 @@ class findbasis:
             nc_lib.append(self.densities[idx].c)
         return np.array(nc_lib)
 
-    def optimize_bf(self, Z, shell, alist, blist, Nn, kfold, doadd=True):
+    def optimize_bf(self, Z, shell, alist, blist, Nn, kfold, doadd=True,
+                    showerr=False):
         if sum([1 for b in blist if b >= 1]) > 0:
             raise ValueError('b should be smaller than 1')
         print 'optimize basis function with even-tempered method \
@@ -184,12 +186,30 @@ class findbasis:
             print '\toptimized b is the largest value in blist'
 
         print 'optimized new shell: %s' % shell_data
-        if doadd:
-            self.basis_data[Z].extend(shell_data)
-            if self.from_basislib:
-                self.from_basislib = False
-                self.basis_name = 'user-defined'
+
+        self.add_basis_data(Z, shell_data)
+        if showerr:
+            # compute error
+            self.fit_density()
+            err = self.get_error()
+            print 'MAE =', np.mean(err)
+            print 'MAX =', np.amax(err)
+            print 'MIN =', np.amin(err)
+            plt.plot(err)
+            plt.show()
+
+        if doadd is False:
+            # remove this shell
+            del self.basis_data[Z][-Nn:]
+
         return shell_data
+
+    def add_basis_data(self, Z, shell_data):
+        "add new shell data into basis data"
+        self.basis_data[Z].extend(shell_data)
+        if self.from_basislib:
+            self.from_basislib = False
+            self.basis_name = 'user-defined'
 
     def output(self, T=None, name=None, fobj=None, atoms_Z=None):
         "output density information to a .py file"
