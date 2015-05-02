@@ -124,9 +124,9 @@ class findbasis:
             nc_lib.append(self.densities[idx].c)
         return np.array(nc_lib)
 
-    def optimize_bf(self, Z, shell, alist, blist, Nn, kfold, doadd=True,
+    def optimize_bf(self, Z, shell, alist, blist=1, Nn=1, kfold=10, doadd=True,
                     showerr=False):
-        if blist == 1:
+        if Nn == 1:
             blist = [1]
             b_is_list = False
         else:
