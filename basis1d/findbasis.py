@@ -126,7 +126,12 @@ class findbasis:
 
     def optimize_bf(self, Z, shell, alist, blist, Nn, kfold, doadd=True,
                     showerr=False):
-        if sum([1 for b in blist if b >= 1]) > 0:
+        if blist == 1:
+            blist = [1]
+            b_is_list = False
+        else:
+            b_is_list = True
+        if sum([1 for b in blist if b >= 1]) > 0 and len(blist) != 1:
             raise ValueError('b should be smaller than 1')
         print 'optimize basis function with even-tempered method \
             with %d-fold cross validation' % kfold
@@ -180,10 +185,11 @@ class findbasis:
             print '\toptimized a is the smallest value in alist'
         elif np.median(a_opt) == max(alist):
             print '\toptimized a is the largest value in alist'
-        if np.median(b_opt) == min(blist):
-            print '\toptimized b is the smallest value in blist'
-        elif np.median(b_opt) == max(blist):
-            print '\toptimized b is the largest value in blist'
+        if b_is_list:
+            if np.median(b_opt) == min(blist):
+                print '\toptimized b is the smallest value in blist'
+            elif np.median(b_opt) == max(blist):
+                print '\toptimized b is the largest value in blist'
 
         print 'optimized new shell: %s' % shell_data
 
