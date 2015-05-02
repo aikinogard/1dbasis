@@ -193,7 +193,7 @@ class findbasis:
 
         print 'optimized new shell: %s' % shell_data
 
-        self.add_basis_data(Z, shell_data)
+        self.add_shell(Z, shell_data)
         if showerr:
             # compute error
             self.fit_density()
@@ -210,12 +210,17 @@ class findbasis:
 
         return shell_data
 
-    def add_basis_data(self, Z, shell_data):
+    def add_shell(self, Z, shell_data):
         "add new shell data into basis data"
         self.basis_data[Z].extend(shell_data)
         if self.from_basislib:
             self.from_basislib = False
             self.basis_name = 'user-defined'
+
+    def remove_shell(self, Z, shell_data):
+        "remove shell data from basis data"
+        for shell in shell_data:
+            self.basis_data[Z].remove(shell)
 
     def output(self, T=None, name=None, fobj=None, atoms_Z=None):
         "output density information to a .py file"
