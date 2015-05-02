@@ -77,8 +77,12 @@ class DensityGrid:
         n_fit = self.grid()
         return np.sum(np.abs(n_fit - self.n)) * self.dx
 
-    def show(self, doshow=False):
-        plt.plot(self.xg, self.n, 'k', label='density on grid')
-        plt.plot(self.xg, self.grid(), 'r--', label='fit density')
+    def show(self, doshow=False, diff=False):
+        if diff:
+            plt.plot(self.xg, self.n - self.grid(), 'g',
+                     label='density difference')
+        else:
+            plt.plot(self.xg, self.n, 'k', label='density on grid')
+            plt.plot(self.xg, self.grid(), 'r--', label='fit density')
         if doshow:
             plt.show()
