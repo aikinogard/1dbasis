@@ -96,7 +96,12 @@ class findbasis:
     def fit_density(self):
         for i, density in enumerate(self.densities):
             if self.verbose:
-                print 'fitting density for #%d' % i
+                if i == 0:
+                    print 'fitting density for #0',
+                elif i == self.Nt - 1:
+                    print '#%d' % i
+                else:
+                    print '#%d' % i,
             density.make_bfs(self.basis_data)
             density.compute_c()
 
