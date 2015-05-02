@@ -19,7 +19,12 @@ class findbasis:
         atoms_x_lib: list, each row is a list of atom coordinates,
                 the length of each row can be different
 
-        atoms_Z: list, list of atomic index of atoms in one chain
+        atoms_Z_lib: list, list of atomic index of atoms in one chain,
+                        if it is a single list, then all densities
+                        use the same atoms_Z.
+                        if it is not a single list, then treat it as
+                        a lib
+
 
         basis_data = \
                     {1: [('s',
@@ -31,18 +36,27 @@ class findbasis:
         basis_data = basis['minix']
     """
 
-    def __init__(self, n_lib, xg_lib, atoms_x_lib, atoms_Z, basis_data,
+    def __init__(self, n_lib, xg_lib, atoms_x_lib, atoms_Z_lib, basis_data,
                  verbose=False):
         assert len(n_lib) == len(xg_lib) == len(atoms_x_lib)
 
         self.Nt = len(n_lib)
         self.densities = []
-        for i in range(self.Nt):
-            self.densities.append(
-                DensityGrid(xg_lib[i], n_lib[i], atoms_x_lib[i],
-                            atoms_Z, verbose))
-        self.atoms_x_lib = np.array(atoms_x_lib)
-        self.atoms_Z = atoms_Z
+        if isinstance(atoms_Z_lib[0], list):
+            assert len(n_lib) == len(atoms_Z_lib)
+            for i in range(self.Nt):
+                self.densities.append(
+                    DensityGrid(xg_lib[i], n_lib[i], atoms_x_lib[i],
+                                atoms_Z_lib[i], verbose))
+            self.single_atoms_Z = False
+        else:
+            for i in range(self.Nt):
+                self.densities.append(
+                    DensityGrid(xg_lib[i], n_lib[i], atoms_x_lib[i],
+                                atoms_Z_lib, verbose))
+            self.single_atoms_Z = True
+        self.atoms_x_lib = atoms_x_lib
+        self.atoms_Z_lib = atoms_Z_lib
         self.verbose = verbose
 
         if isinstance(basis_data, str):
@@ -64,11 +78,11 @@ class findbasis:
     def __len__(self):
         return self.densities.__len__()
 
-    def stoich(self):
+    def stoich(self, atoms_Z):
         from collections import Counter
         from basis1d.tools import symbol
         cnt = Counter()
-        for Z in self.atoms_Z:
+        for Z in atoms_Z:
             cnt[Z] += 1
         keys = sorted(cnt.keys())
         s = []
@@ -172,25 +186,47 @@ class findbasis:
                 self.basis_name = 'user-defined'
         return shell_data
 
-    def output(self, T=None, name=None, fobj=None):
+    def output(self, T=None, name=None, fobj=None, atoms_Z=None):
         "output density information to a .py file"
         dens_dict = {}
-
         if T is None:
             T = range(self.Nt)
-
-        if name is None:
-            name = '%sNt%d' % (self.stoich(), self.Nt)
-
-        dens_dict['name'] = name
-
-        dens_dict['atoms_Z'] = self.atoms_Z
-
         dens_dict['basis_name'] = self.basis_name
         dens_dict['basis_data'] = self.basis_data
 
-        dens_dict['nc_lib'] = self.get_nc_lib(T)
-        dens_dict['atoms_x_lib'] = self.atoms_x_lib[T]
+        if self.single_atoms_Z:
+            if name is None:
+                name = '%sNt%d' %\
+                    (self.stoich(self.atoms_Z_lib), self.Nt)
+
+            dens_dict['name'] = name
+
+            dens_dict['atoms_Z'] = self.atoms_Z_lib
+
+            dens_dict['nc_lib'] = self.get_nc_lib(T)
+            dens_dict['atoms_x_lib'] = np.array(self.atoms_x_lib)[T]
+
+        else:
+            if atoms_Z is None:
+                raise RuntimeError('There are different chains, please\
+                    specify atoms_Z')
+            if name is None:
+                name = '%sNt%d' %\
+                    (self.stoich(atoms_Z), self.Nt)
+
+            T_single = []
+            atoms_x_lib_single = []
+            for i in T:
+                if self.atoms_Z_lib[i] == atoms_Z:
+                    T_single.append(i)
+                    atoms_x_lib_single.append(self.atoms_x_lib[i])
+
+            dens_dict['name'] = name
+
+            dens_dict['atoms_Z'] = atoms_Z
+
+            dens_dict['nc_lib'] = self.get_nc_lib(T_single)
+            dens_dict['atoms_x_lib'] = np.array(atoms_x_lib_single)
 
         if fobj:
             from basis1d.tools import dict2str
