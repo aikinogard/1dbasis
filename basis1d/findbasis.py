@@ -114,14 +114,25 @@ class findbasis:
             err_lib[i] = self.densities[idx].get_error()
         return err_lib
 
-    def get_nc_lib(self, T=None):
+    def get_nc_lib(self, T=None, compute=False):
         if T is None:
             T = range(self.Nt)
         nc_lib = []
-        for i, idx in enumerate(T):
-            self.densities[idx].make_bfs(self.basis_data)
-            self.densities[idx].compute_c()
-            nc_lib.append(self.densities[idx].c)
+        if compute:
+            for i, idx in enumerate(T):
+                if self.verbose:
+                    if i == 0:
+                        print 'fitting density for #0',
+                    elif i == self.Nt - 1:
+                        print '#%d' % i
+                    else:
+                        print '#%d' % i,
+                self.densities[idx].make_bfs(self.basis_data)
+                self.densities[idx].compute_c()
+                nc_lib.append(self.densities[idx].c)
+        else:
+            for i, idx in enumerate(T):
+                nc_lib.append(self.densities[idx].c)
         return np.array(nc_lib)
 
     def optimize_bf(self, Z, shell, alist, blist=1, Nn=1, kfold=10, doadd=True,
