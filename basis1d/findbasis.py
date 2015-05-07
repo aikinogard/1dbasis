@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 import matplotlib.pyplot as plt
 from basis1d.basislib import basis
@@ -134,6 +135,63 @@ class findbasis:
             for i, idx in enumerate(T):
                 nc_lib.append(self.densities[idx].c)
         return np.array(nc_lib)
+
+    def basis_tier(self, Z, primary_shell, write_over=False, showerr=False):
+        if primary_shell not in self.basis_data[Z]:
+            raise RuntimeError("primary shell should be in basis data")
+        Nshell = len(self.basis_data[Z])
+        unsort_basis = copy.deepcopy(self.basis_data[Z])
+        unsort_basis.remove(primary_shell)
+        sort_basis = [primary_shell]
+        err_min_list = np.empty(Nshell)
+
+        err = 0.
+        for density in self:
+            density.make_bfs({Z: sort_basis})
+            density.compute_c()
+            err += density.get_error()
+        err = err / len(self)
+        err_min_list[0] = err
+        print 'primary shell is', primary_shell
+        print 'MAE=%4.10f' % err_min_list[0]
+
+        for i in range(Nshell - 1):
+            print 'sorting shell...#%d' % (i + 1)
+            err_min = np.inf
+            shell_best = None
+            print 'trying...shell',
+            for j, shell in enumerate(unsort_basis):
+                print '#%d' % j,
+                sort_basis.append(shell)
+                err = 0.
+                for density in self:
+                    density.make_bfs({Z: sort_basis})
+                    density.compute_c()
+                    err += density.get_error()
+                err = err / len(self)
+                sort_basis.remove(shell)
+                if err < err_min:
+                    shell_best = shell
+                    err_min = err
+            sort_basis.append(shell_best)
+            unsort_basis.remove(shell_best)
+            err_min_list[i + 1] = err_min
+            print 'done!'
+            print 'best shell is', shell_best
+            print 'MAE=%4.10f' % err_min
+        print "sorted basis / fitting error:"
+        err_range = err_min_list[0] - err_min_list[-1]
+        for (shell, err_min) in zip(sort_basis, err_min_list):
+            print "%s / %4.10f / %4.10f%%" %\
+                (shell, err_min, 100 *
+                 (1 - (err_min - err_min_list[-1]) / err_range))
+        if showerr:
+            plt.plot(100 * (1 - (err_min_list - err_min_list[-1]) / err_range),
+                     'ro--')
+            plt.show()
+        if write_over:
+            self.basis_data[Z] = sort_basis
+        return sort_basis
 
     def optimize_bf(self, Z, shell, alist, blist=1, Nn=1, kfold=10, doadd=True,
                     showerr=False):
